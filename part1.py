@@ -10,8 +10,8 @@ N_professor = int('1985008F25A025097712D26B5A322982B6EBAFA5826B6EDA3B91F78B7BD63
 n_length = 1024
 
 # 2 primos aleatorios
-#p = number.getPrime(n_length) # talvez botar Random.new().read
-#q = number.getPrime(n_length) #
+#p = number.getPrime(n_length) 
+#q = number.getPrime(n_length) 
 p = 92392736051404410760489211138928933084669142998113543808554897627750570982116408258371998695213555237792397733512856385994918816918636640713870525296026613920083515907015615429890827328183359151438284540091182946989292605495678930433105724422398902024307550415183491566255289753386220625618362623001389119187
 q = 137406368247632677945311369058109307236482989410461182032063774518640481878456792323974011119473612130724019393467401749836208406613788893164893361085919637031221752813994486285238514963123326738206678556176402892018710905234658833475432118894544955465633191531566947144539267520653729422507479354428458273103
 
@@ -20,7 +20,9 @@ L = (p-1) * (q-1) # euler
 
 # achar um E que seja primo relativo de L
 e_a = None
-for val in range(2, L): 
+e_a = int('E6A45B1F1BFBD3DCD7CBD688D78BB47F', 16)
+while (not e_a): 
+  val = number.getRandomNBitInteger(128)
   if bltin_gcd(val, L) == 1: # algoritmo euclidiano de achar Greatest Common Divisor
      e_a = val
      break
@@ -35,9 +37,13 @@ print("d_a = ", hexPrint(d_a))
 print("\nN_a = ", hexPrint(PK_a[1]))
 
 #### Chaves simetricas
-s = number.getRandomNBitInteger(128) # valor aleatorio de 128 bits
-x = (s ** e_professor) % N_professor # cifrar a chave c/ a chave do professor  # pode estar errado https://stackoverflow.com/questions/48839772/why-is-time-complexity-o1-for-powx-y-while-it-is-on-for-xy
-sig_x = (x ** d_a) % N_a             # assinar mensagem com minha chave privada
+#s = number.getRandomNBitInteger(128) # valor aleatorio de 128 bits
+#x = (s ** e_professor) % N_professor # cifrar a chave c/ a chave do professor  # pode estar errado https://stackoverflow.com/questions/48839772/why-is-time-complexity-o1-for-powx-y-while-it-is-on-for-xy
+#sig_x = (x ** d_a) % N_a             # assinar mensagem com minha chave privada
+
+s = int('E621977578D75D3992C9A0B988A42F24', 16)
+x = pow(s, e_professor, N_professor)
+sig_x = pow(x, d_a, N_a)
 
 
 print("\ns = ", hexPrint(s))
