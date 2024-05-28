@@ -6,7 +6,15 @@ from math import gcd as bltin_gcd
 
 # impressão de valores Hex no terminal
 def hexPrint(val):
-   return str(hex(val))[2:].upper()
+   return str(hex(val))[2:].upper().zfill(32)
+
+def verificaHexaNegativo(n_val):
+   hex_str = hexPrint(n_val).zfill(32)
+   if (hex_str[0] in ('8', '9', 'A', 'B', 'C', 'D', 'E', 'F')):
+      bytes_val = bytes.fromhex(str(hex(n_val))[2:])
+      shifted_data = b'\x00' + bytes_val[:-1] # adiciona 00 no começo e tira o ultimo byte
+      n_val = int(shifted_data.hex(), 16)     # converte de volta pra hex
+   return n_val
 
 # Chave pública professor
 e_professor = int('2E76A0094D4CEE0AC516CA162973C895', 16)
@@ -23,7 +31,8 @@ N_a = p * q
 L = (p-1) * (q-1) # euler
 
 # achar um E que seja primo relativo de L
-e_a = int('E6A45B1F1BFBD3DCD7CBD688D78BB47F', 16) # caso queira achar outro, deixar como None
+e_a = int('E6A45B1F1BFBD3DCD7CBD688D78BB47F', 16) 
+#e_a = None # descomentar caso queira achar um novo valor
 while (not e_a): 
   val = number.getRandomNBitInteger(128)
   if bltin_gcd(val, L) == 1: # algoritmo euclidiano de achar Greatest Common Divisor
@@ -42,6 +51,8 @@ print("\nN_a = ", hexPrint(PK_a[1]))
 #### Chaves simetricas
 #s = number.getRandomNBitInteger(128) # valor aleatorio de 128 bits
 s = int('E621977578D75D3992C9A0B988A42F24', 16)
+
+s = verificaHexaNegativo(s)
 x = pow(s, e_professor, N_professor)
 sig_x = pow(x, d_a, N_a)
 
